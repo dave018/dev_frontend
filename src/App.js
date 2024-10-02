@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function App() {
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    // Django API 호출
+    axios
+      .get("http://localhost:8000/dev_app/hello/")
+      .then((response) => {
+        setMessage(response.data.message); // API 응답에서 메시지 설정
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Django API에서 가져온 메시지</h1>
+      <p>{message}</p>
     </div>
   );
 }
